@@ -1,8 +1,9 @@
 # bundle.pp
 class puppet_vim_env::bundle ( $homedir ) {
+  include git
 
   $bundledir = "${homedir}/.vim/bundle"
-  
+
   if $::is_pe == 'true' {
     $gem_provider = 'pe_gem'
     $lint_target  = '/opt/puppet/bin/puppet-lint'
@@ -30,6 +31,7 @@ class puppet_vim_env::bundle ( $homedir ) {
   Vcsrepo {
     ensure   => present,
     provider => git,
+    require  => Class['git'],
   }
 
   vcsrepo { "${bundledir}/vim-addon-mw-utils":
